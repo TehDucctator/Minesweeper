@@ -21,6 +21,7 @@ def print_board(board: list):
 
     print()
 
+
 # sets up board
 def set_up(board: list):
   for row in board:
@@ -30,6 +31,8 @@ def set_up(board: list):
         element.append("B")
       else:
         element.append("?")
+  
+  count_bomb(board)
 
 
 def count_bomb(board: list):
@@ -50,17 +53,18 @@ def count_bomb(board: list):
 
       # row above
       if row-1 != -1:
-        for space in board[row-1][index-1:index+2]:
+        for space in board[row-1][max(index-1, 0):index+2]:
           if space[0] == "B":
             count += 1
 
       # row below
       if row+1 != 8:
-        for space in board[row+1][index-1:index+2]:
+        for space in board[row+1][max(index-1, 0):index+2]:
           if space[0] == "B":
             count += 1
       
       board[row][index][0] = count
+
 
 def hide_board(board: list):
   # copies board
@@ -78,21 +82,34 @@ def hide_board(board: list):
   
   return p_board
 
+
 def dig(p_board: list, board: list):
   row, column = input("Enter the space you want to dig (type the row number then the column number): ").split()
   ri = int(row) - 1
   ci = int(column) - 1
+  spot = board[ri][ci][:]
 
-  p_board[ri][ci] = board[ri][ci][:]
+  p_board[ri][ci] = spot
+
+  print_board(p_board)
+  return spot[0]
+
+
+def game(p_board: list, board: list):
+  alive = True
+
+  while alive:
+    if dig(p_board, board) == "B":
+      alive = False
+      print("Game Over")
+
 
 def main():
   set_up(board)
-  count_bomb(board)
   p_board = hide_board(board)
   print_board(board)
   print_board(p_board)
-  dig(p_board, board)
-  print_board(p_board)
+  game(p_board, board)
   
 if __name__ == "__main__":
   main()
