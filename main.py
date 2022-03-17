@@ -62,10 +62,28 @@ def count_bomb(board: list):
       
       board[row][index][0] = count
 
+def hide_board(board: list):
+  # copies board
+  p_board = []
+  for row in board:
+    p_row = []
+    for elem in row:
+      p_row.append(elem[:])
+    p_board.append(p_row)
+  
+  for ri, row in enumerate(p_board):
+    for space_i in range(len(row)):
+      p_board[ri][space_i][0] = "?"
+  
+  return p_board
+  
 def main():
   set_up(board)
   count_bomb(board)
   print_board(board)
+  p_board = hide_board(board)
+  print_board(board)
+  print_board(p_board)
   
 if __name__ == "__main__":
   main()
