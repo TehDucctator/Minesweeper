@@ -71,18 +71,27 @@ def hide_board(board: list):
       p_row.append(elem[:])
     p_board.append(p_row)
   
+  # replaces spaces on board with ?
   for ri, row in enumerate(p_board):
     for space_i in range(len(row)):
       p_board[ri][space_i][0] = "?"
   
   return p_board
-  
+
+def dig(p_board: list, board: list):
+  row, column = input("Enter the space you want to dig (type the row number then the column number): ").split()
+  ri = int(row) - 1
+  ci = int(column) - 1
+
+  p_board[ri][ci] = board[ri][ci][:]
+
 def main():
   set_up(board)
   count_bomb(board)
-  print_board(board)
   p_board = hide_board(board)
   print_board(board)
+  print_board(p_board)
+  dig(p_board, board)
   print_board(p_board)
   
 if __name__ == "__main__":
