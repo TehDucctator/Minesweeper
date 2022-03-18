@@ -84,21 +84,29 @@ def hide_board(board: list):
 
 
 def dig(p_board: list, board: list):
-  row, column = input("Enter the space you want to dig (type the row number then the column number): ").split()
+  try:
+    row, column, d = input("Enter the space you want to dig \n(type the row number then the column number, then d or f to dig or place a flag):\n").split()
+  except ValueError:
+    return None
   ri = int(row) - 1
   ci = int(column) - 1
   spot = board[ri][ci][:]
 
-  p_board[ri][ci] = spot
+  if d == "d":
+    p_board[ri][ci] = spot
+    return spot[0]
+    
+  elif d == "f":
+    p_board[ri][ci][0] = "F"
 
-  print_board(p_board)
-  return spot[0]
-
+  return None
+  
 
 def game(p_board: list, board: list):
   alive = True
 
   while alive:
+    print_board(p_board)
     if dig(p_board, board) == "B":
       alive = False
       print("Game Over")
@@ -107,8 +115,6 @@ def game(p_board: list, board: list):
 def main():
   set_up(board)
   p_board = hide_board(board)
-  print_board(board)
-  print_board(p_board)
   game(p_board, board)
   
 if __name__ == "__main__":
