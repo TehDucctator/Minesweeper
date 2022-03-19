@@ -1,14 +1,5 @@
 import random
 
-board = [[[],[],[],[],[],[],[],[]],
-         [[],[],[],[],[],[],[],[]],
-         [[],[],[],[],[],[],[],[]],
-         [[],[],[],[],[],[],[],[]],
-         [[],[],[],[],[],[],[],[]],
-         [[],[],[],[],[],[],[],[]],
-         [[],[],[],[],[],[],[],[]],
-         [[],[],[],[],[],[],[],[]]]
-
 # prints the board
 def print_board(board: list):
   print("  1 2 3 4 5 6 7 8")
@@ -23,7 +14,16 @@ def print_board(board: list):
 
 
 # sets up board
-def set_up(board: list):
+def set_up():
+  board = [[[],[],[],[],[],[],[],[]],
+           [[],[],[],[],[],[],[],[]],
+           [[],[],[],[],[],[],[],[]],
+           [[],[],[],[],[],[],[],[]],
+           [[],[],[],[],[],[],[],[]],
+           [[],[],[],[],[],[],[],[]],
+           [[],[],[],[],[],[],[],[]],
+           [[],[],[],[],[],[],[],[]]]
+
   for row in board:
     for element in row:
       rng = random.randint(1, 8)
@@ -33,6 +33,7 @@ def set_up(board: list):
         element.append("?")
   
   count_bomb(board)
+  return board
 
 
 def count_bomb(board: list):
@@ -108,12 +109,13 @@ def game(p_board: list, board: list):
   while alive:
     print_board(p_board)
     if dig(p_board, board) == "B":
+      print_board(p_board)
       alive = False
       print("Game Over")
 
 
 def main():
-  set_up(board)
+  board = set_up()
   p_board = hide_board(board)
   game(p_board, board)
   
