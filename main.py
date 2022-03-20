@@ -13,7 +13,7 @@ def print_board(board: list):
     print()
 
 
-# sets up board
+# sets up board, returns board with bombs placed
 def set_up():
   board = [[[],[],[],[],[],[],[],[]],
            [[],[],[],[],[],[],[],[]],
@@ -35,7 +35,7 @@ def set_up():
   count_bomb(board)
   return board
 
-
+# counts bombs around a space and writes to the board
 def count_bomb(board: list):
   for row in range(len(board)):
     for index in range(len(board)):
@@ -83,7 +83,7 @@ def hide_board(board: list):
   
   return p_board
 
-
+# digs at space given, returns what was dug, returns None if out of range or placing flag
 def dig(p_board: list, board: list, row: int, column: int, d: str):
   ri = int(row) - 1
   ci = int(column) - 1
@@ -124,6 +124,7 @@ def check(p_board, board):
 
   return won
 
+# main game loop
 def game(p_board: list, board: list):
   alive = True
 
@@ -150,7 +151,7 @@ def game(p_board: list, board: list):
       alive = False
       print("You Won!")
 
-
+# main function
 def main():
   board = set_up()
   p_board = hide_board(board)
