@@ -87,7 +87,10 @@ def hide_board(board: list):
 def dig(p_board: list, board: list, row: int, column: int, d: str):
   ri = int(row) - 1
   ci = int(column) - 1
-  spot = board[ri][ci][:]
+  try:
+    spot = board[ri][ci][:]
+  except IndexError:
+    return None
 
   if d == "d":
     p_board[ri][ci] = spot
@@ -98,6 +101,28 @@ def dig(p_board: list, board: list, row: int, column: int, d: str):
 
   return None
   
+# checks if won
+def check(p_board, board):
+  won = True
+
+  for row in range(len(p_board)):
+    for elem in range(len(p_board[row])):
+      if p_board[row][elem][0] == board[row][elem][0]:
+        continue
+
+      elif p_board[row][elem][0] == "F":
+
+        if board[row][elem][0] == "B":
+          continue
+
+        else:
+          won = False
+
+      else:
+        won = False
+
+
+  return won
 
 def game(p_board: list, board: list):
   alive = True
@@ -117,10 +142,13 @@ def game(p_board: list, board: list):
     except ValueError:
       continue
 
-    if dig(p_board, board, row, column, d) == "B":
+    if dig(p_board, board, row, column, d) == "B": # dug bomb
       print_board(board)
       alive = False
       print("Game Over")
+    elif check(p_board, board): # won
+      alive = False
+      print("You Won!")
 
 
 def main():
