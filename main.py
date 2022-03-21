@@ -2,13 +2,25 @@ import random
 
 # prints the board
 def print_board(board: list):
-  print("  1 2 3 4 5 6 7 8")
+  RED_BG = "\u001B[41m"
+  GREEN = "\u001B[32m"
+  DEFAULT = "\u001B[39;49m"
+  
+  print(GREEN + "  1 2 3 4 5 6 7 8" + DEFAULT)
   row_count = 0
+
   for row in board:
     row_count += 1
-    print(row_count, end=" ")
+    print(GREEN + str(row_count) + DEFAULT, end=" ")
+
     for element in row:
-      print(element[0], end=" ")
+      if element[0] == "B":
+        print(RED_BG + "B" + DEFAULT, end=" ")
+      elif element[0] == "F":
+        print(RED_BG + "F" + DEFAULT, end=" ")
+
+      else:
+        print(element[0], end=" ")
 
     print()
 
@@ -26,8 +38,9 @@ def set_up():
 
   for row in board:
     for element in row:
-      rng = random.randint(1, 8)
-      if rng == 8:
+      rng = random.randint(1, 6)
+
+      if rng == 1:
         element.append("B")
       else:
         element.append("?")
@@ -35,6 +48,32 @@ def set_up():
   count_bomb(board)
   return board
 
+def color_num(num):
+  RED = "\u001B[31m"
+  GREEN = "\u001B[32m"
+  YELLOW = "\u001B[33m"
+  BLUE = "\033[0;34m"
+  PURPLE = "\033[0;35m"
+  WHITE = "\u001B[37m"
+
+  if num == "0":
+    pass
+  elif num == "1":
+    num = BLUE + num + WHITE
+  elif num == "2":
+    num = GREEN + num + WHITE
+  elif num == "3":
+    num = RED + num + WHITE
+  elif num == "4":
+    num = YELLOW + num + WHITE
+  elif num == "5":
+    num = PURPLE + num + WHITE
+  else:
+    num = RED + num + WHITE
+
+  return num
+
+  
 # counts bombs around a space and writes to the board
 def count_bomb(board: list):
   for row in range(len(board)):
@@ -64,7 +103,7 @@ def count_bomb(board: list):
           if space[0] == "B":
             count += 1
       
-      board[row][index][0] = count
+      board[row][index][0] = color_num(str(count))
 
 
 def hide_board(board: list):
@@ -74,6 +113,7 @@ def hide_board(board: list):
     p_row = []
     for elem in row:
       p_row.append(elem[:])
+
     p_board.append(p_row)
   
   # replaces spaces on board with ?
@@ -85,6 +125,9 @@ def hide_board(board: list):
 
 # digs at space given, returns what was dug, returns None if out of range or placing flag
 def dig(p_board: list, board: list, row: int, column: int, d: str):
+  RED_BG = "\u001B[41m"
+  DEFAULT = "\u001B[39;49m"
+  
   ri = int(row) - 1
   ci = int(column) - 1
   try:
@@ -97,7 +140,7 @@ def dig(p_board: list, board: list, row: int, column: int, d: str):
     return spot[0]
     
   elif d == "f":
-    p_board[ri][ci][0] = "F"
+    p_board[ri][ci][0] = RED_BG + "F" + DEFAULT
 
   return None
   
@@ -156,6 +199,6 @@ def main():
   board = set_up()
   p_board = hide_board(board)
   game(p_board, board)
-  
+
 if __name__ == "__main__":
   main()
